@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings2, Eye } from 'lucide-react';
+import { Settings2, Eye, Github } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PaymentCard } from '@/components/PaymentCard';
 import { CustomizeForm, AddressType } from '@/components/CustomizeForm';
@@ -177,11 +177,11 @@ const Index = () => {
             <span className="text-sm">{t.footer}</span>
           </div>
           
-          <div className="pt-2 border-t border-border/50">
+          <div className="pt-2 border-t border-border/50 space-y-2">
             <p className="text-xs text-muted-foreground">
               {t.poweredBy}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground">
               Apoio{' '}
               <a
                 href="https://areabitcoin.com.br"
@@ -192,6 +192,15 @@ const Index = () => {
                 Area Bitcoin
               </a>
             </p>
+            <a
+              href="https://github.com/areabitcoin/aceitobitcoin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Github className="w-4 h-4" />
+              <span>Código aberto no GitHub</span>
+            </a>
           </div>
         </div>
       </footer>
