@@ -153,33 +153,38 @@ export const PaymentCard = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 pb-6 flex items-center justify-between">
-          {btcmapLink ? (
+        <div className="px-6 pb-5 pt-2 border-t border-border/50">
+          {/* Location Link - Centered */}
+          {btcmapLink && (
             <a
               href={btcmapLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-xs"
+              className="flex items-center justify-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm font-medium mb-3 py-2 px-4 bg-bitcoin-light/50 rounded-full mx-auto w-fit"
             >
               <MapPin className="w-4 h-4" />
               <span>{t.findOnMap}</span>
             </a>
-          ) : (
-            <div />
           )}
           
-          <a
-            href="https://areabitcoin.com.br"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="opacity-70 hover:opacity-100 transition-opacity"
-          >
-            <img 
-              src={areaBitcoinLogo} 
-              alt="Area Bitcoin" 
-              className="h-6 w-auto"
-            />
-          </a>
+          {/* Area Bitcoin Branding */}
+          <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
+            <span className="text-[10px]">
+              {language === 'pt' ? 'Apoio' : language === 'es' ? 'Apoyo' : 'Powered by'}
+            </span>
+            <a
+              href="https://areabitcoin.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-60 hover:opacity-100 transition-opacity"
+            >
+              <img 
+                src={areaBitcoinLogo} 
+                alt="Area Bitcoin" 
+                className="h-4 w-auto"
+              />
+            </a>
+          </div>
         </div>
       </div>
 
