@@ -21,6 +21,7 @@ interface FormData {
   address: string;
   addressType: AddressType;
   logoUrl: string;
+  btcmapLink: string;
 }
 
 interface CustomizeFormProps {
@@ -133,6 +134,26 @@ export const CustomizeForm = ({ formData, onFormChange, language }: CustomizeFor
           rows={3}
           className="font-mono text-sm"
         />
+      </div>
+
+      {/* BTCMap Link */}
+      <div className="space-y-2">
+        <Label htmlFor="btcmapLink">{t.btcmapLink}</Label>
+        <Input
+          id="btcmapLink"
+          value={formData.btcmapLink}
+          onChange={(e) => handleChange('btcmapLink', e.target.value)}
+          placeholder={t.btcmapPlaceholder}
+        />
+        <a
+          href="https://btcmap.org/add-location"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+        >
+          <ExternalLink className="w-3.5 h-3.5" />
+          {language === 'pt' ? 'Adicione seu estabelecimento no BTCMap' : language === 'es' ? 'Añade tu establecimiento en BTCMap' : 'Add your business to BTCMap'}
+        </a>
       </div>
 
       {/* Logo Upload */}

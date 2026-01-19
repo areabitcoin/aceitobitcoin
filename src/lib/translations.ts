@@ -18,6 +18,9 @@ export const translations = {
     uploadLogo: 'Logo (opcional)',
     preview: 'Visualizar',
     saveChanges: 'Salvar Alterações',
+    btcmapLink: 'Link do BTCMap (opcional)',
+    btcmapPlaceholder: 'Ex: https://btcmap.org/merchant/seu-negocio',
+    findOnMap: 'Encontre no mapa',
     addressTypes: {
       lightning: 'Lightning Address',
       silentPayment: 'Silent Payment',
@@ -48,6 +51,9 @@ export const translations = {
     uploadLogo: 'Logo (optional)',
     preview: 'Preview',
     saveChanges: 'Save Changes',
+    btcmapLink: 'BTCMap Link (optional)',
+    btcmapPlaceholder: 'Ex: https://btcmap.org/merchant/your-business',
+    findOnMap: 'Find on map',
     addressTypes: {
       lightning: 'Lightning Address',
       silentPayment: 'Silent Payment',
@@ -78,6 +84,9 @@ export const translations = {
     uploadLogo: 'Logo (opcional)',
     preview: 'Vista previa',
     saveChanges: 'Guardar Cambios',
+    btcmapLink: 'Enlace BTCMap (opcional)',
+    btcmapPlaceholder: 'Ej: https://btcmap.org/merchant/tu-negocio',
+    findOnMap: 'Encontrar en el mapa',
     addressTypes: {
       lightning: 'Lightning Address',
       silentPayment: 'Silent Payment',

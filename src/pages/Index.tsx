@@ -16,6 +16,7 @@ interface FormData {
   address: string;
   addressType: AddressType;
   logoUrl: string;
+  btcmapLink: string;
 }
 
 const Index = () => {
@@ -27,6 +28,7 @@ const Index = () => {
     address: '',
     addressType: 'lightning',
     logoUrl: '',
+    btcmapLink: '',
   });
 
   const t = getTranslation(language);
@@ -64,6 +66,7 @@ const Index = () => {
               address={formData.address}
               addressType={formData.addressType}
               logoUrl={formData.logoUrl}
+              btcmapLink={formData.btcmapLink}
               language={language}
             />
           </div>
@@ -89,6 +92,7 @@ const Index = () => {
                   address={formData.address}
                   addressType={formData.addressType}
                   logoUrl={formData.logoUrl}
+                  btcmapLink={formData.btcmapLink}
                   language={language}
                 />
                 <ShareWidget
@@ -144,6 +148,7 @@ const Index = () => {
                   address={formData.address}
                   addressType={formData.addressType}
                   logoUrl={formData.logoUrl}
+                  btcmapLink={formData.btcmapLink}
                   language={language}
                 />
                 <ShareWidget
