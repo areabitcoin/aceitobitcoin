@@ -5,6 +5,7 @@ import { QRCodeDisplay } from './QRCodeDisplay';
 import { BitcoinIcon } from './BitcoinIcon';
 import { Language, getTranslation } from '@/lib/translations';
 import bitcoinLogo from '@/assets/bitcoin-logo.png';
+import areaBitcoinLogo from '@/assets/area-bitcoin-logo.png';
 import html2canvas from 'html2canvas';
 
 interface PaymentCardProps {
@@ -13,6 +14,7 @@ interface PaymentCardProps {
   address: string;
   addressType: 'lightning' | 'silentPayment' | 'onChain';
   logoUrl?: string;
+  btcmapLink?: string;
   language: Language;
 }
 
@@ -22,6 +24,7 @@ export const PaymentCard = ({
   address,
   addressType,
   logoUrl,
+  btcmapLink,
   language,
 }: PaymentCardProps) => {
   const [copied, setCopied] = useState(false);
@@ -150,19 +153,32 @@ export const PaymentCard = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 flex items-center justify-between">
+          {btcmapLink ? (
+            <a
+              href={btcmapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-xs"
+            >
+              <MapPin className="w-4 h-4" />
+              <span>{t.findOnMap}</span>
+            </a>
+          ) : (
+            <div />
+          )}
+          
           <a
-            href="https://btcmap.org/add-location"
+            href="https://areabitcoin.com.br"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 text-primary hover:text-primary/80 transition-colors text-xs"
+            className="opacity-70 hover:opacity-100 transition-opacity"
           >
-            <MapPin className="w-4 h-4" />
-            <span>
-              {language === 'pt' ? 'Adicione seu estabelecimento no BTCMap' : 
-               language === 'es' ? 'Añade tu establecimiento en BTCMap' : 
-               'Add your business to BTCMap'}
-            </span>
+            <img 
+              src={areaBitcoinLogo} 
+              alt="Area Bitcoin" 
+              className="h-6 w-auto"
+            />
           </a>
         </div>
       </div>

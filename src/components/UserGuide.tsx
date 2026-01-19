@@ -1,4 +1,4 @@
-import { BookOpen, Zap, Wallet, Shield, MapPin, GraduationCap, ExternalLink } from 'lucide-react';
+import { BookOpen, Zap, Wallet, Shield, MapPin, GraduationCap, ExternalLink, TrendingUp, Globe, Coins } from 'lucide-react';
 import { Language } from '@/lib/translations';
 import {
   Accordion,
@@ -34,8 +34,9 @@ const guideContent = {
       },
       {
         icon: MapPin,
-        title: '4. Imprima e divulgue',
-        description: 'Clique em "Imprimir" para criar seu material. Cole no balcão, na porta ou onde seus clientes possam ver!',
+        title: '4. Adicione no BTCMap',
+        description: 'Cadastre seu estabelecimento no BTCMap para que clientes do mundo todo possam encontrá-lo. Cole o link gerado no campo "Link do BTCMap".',
+        btcmapLink: 'https://btcmap.org/add-location',
       },
     ],
     faq: {
@@ -56,6 +57,39 @@ const guideContent = {
         {
           question: 'Como o cliente paga?',
           answer: 'O cliente escaneia o QR Code com a carteira Bitcoin dele, digita o valor e confirma. O pagamento chega em segundos!',
+        },
+        {
+          question: 'Como adiciono meu negócio no BTCMap?',
+          answer: 'Acesse btcmap.org/add-location, preencha as informações do seu estabelecimento e envie. Após aprovação, copie o link do seu negócio e cole no campo "Link do BTCMap" aqui no card.',
+        },
+      ],
+    },
+    whyAcceptBitcoin: {
+      title: 'Por que aceitar Bitcoin?',
+      items: [
+        {
+          icon: TrendingUp,
+          title: 'Sem taxas abusivas',
+          description: 'Taxas muito menores que cartões de crédito e maquininhas tradicionais.',
+          url: 'https://blog.areabitcoin.com.br/bitcoin-como-meio-de-pagamento/',
+        },
+        {
+          icon: Globe,
+          title: 'Pagamentos globais',
+          description: 'Receba de qualquer lugar do mundo, instantaneamente, sem intermediários.',
+          url: 'https://blog.areabitcoin.com.br/como-a-lightning-network-funciona/',
+        },
+        {
+          icon: Shield,
+          title: 'Sem chargebacks',
+          description: 'Pagamentos em Bitcoin são irreversíveis - sem fraudes de estorno.',
+          url: 'https://blog.areabitcoin.com.br/o-que-e-bitcoin/',
+        },
+        {
+          icon: Coins,
+          title: 'Proteção contra inflação',
+          description: 'Bitcoin é escasso e protege seu poder de compra a longo prazo.',
+          url: 'https://blog.areabitcoin.com.br/por-que-o-bitcoin-e-importante/',
         },
       ],
     },
@@ -111,8 +145,9 @@ const guideContent = {
       },
       {
         icon: MapPin,
-        title: '4. Print and share',
-        description: 'Click "Print" to create your material. Place it on the counter, door, or wherever your customers can see it!',
+        title: '4. Add to BTCMap',
+        description: 'Register your business on BTCMap so customers worldwide can find you. Paste the generated link in the "BTCMap Link" field.',
+        btcmapLink: 'https://btcmap.org/add-location',
       },
     ],
     faq: {
@@ -133,6 +168,39 @@ const guideContent = {
         {
           question: 'How does the customer pay?',
           answer: 'The customer scans the QR Code with their Bitcoin wallet, enters the amount, and confirms. Payment arrives in seconds!',
+        },
+        {
+          question: 'How do I add my business to BTCMap?',
+          answer: 'Go to btcmap.org/add-location, fill in your business information and submit. After approval, copy your business link and paste it in the "BTCMap Link" field here.',
+        },
+      ],
+    },
+    whyAcceptBitcoin: {
+      title: 'Why accept Bitcoin?',
+      items: [
+        {
+          icon: TrendingUp,
+          title: 'No excessive fees',
+          description: 'Much lower fees than credit cards and traditional payment processors.',
+          url: 'https://blog.areabitcoin.com.br/bitcoin-como-meio-de-pagamento/',
+        },
+        {
+          icon: Globe,
+          title: 'Global payments',
+          description: 'Receive from anywhere in the world, instantly, without intermediaries.',
+          url: 'https://blog.areabitcoin.com.br/como-a-lightning-network-funciona/',
+        },
+        {
+          icon: Shield,
+          title: 'No chargebacks',
+          description: 'Bitcoin payments are irreversible - no chargeback fraud.',
+          url: 'https://blog.areabitcoin.com.br/o-que-e-bitcoin/',
+        },
+        {
+          icon: Coins,
+          title: 'Inflation protection',
+          description: 'Bitcoin is scarce and protects your purchasing power long-term.',
+          url: 'https://blog.areabitcoin.com.br/por-que-o-bitcoin-e-importante/',
         },
       ],
     },
@@ -188,8 +256,9 @@ const guideContent = {
       },
       {
         icon: MapPin,
-        title: '4. Imprime y comparte',
-        description: '¡Haz clic en "Imprimir" para crear tu material. Colócalo en el mostrador, puerta o donde tus clientes puedan verlo!',
+        title: '4. Agregar en BTCMap',
+        description: 'Registra tu establecimiento en BTCMap para que clientes de todo el mundo puedan encontrarte. Pega el enlace generado en el campo "Enlace BTCMap".',
+        btcmapLink: 'https://btcmap.org/add-location',
       },
     ],
     faq: {
@@ -210,6 +279,39 @@ const guideContent = {
         {
           question: '¿Cómo paga el cliente?',
           answer: 'El cliente escanea el código QR con su billetera Bitcoin, ingresa el monto y confirma. ¡El pago llega en segundos!',
+        },
+        {
+          question: '¿Cómo agrego mi negocio en BTCMap?',
+          answer: 'Ve a btcmap.org/add-location, completa la información de tu establecimiento y envía. Después de la aprobación, copia el enlace de tu negocio y pégalo en el campo "Enlace BTCMap" aquí.',
+        },
+      ],
+    },
+    whyAcceptBitcoin: {
+      title: '¿Por qué aceptar Bitcoin?',
+      items: [
+        {
+          icon: TrendingUp,
+          title: 'Sin tarifas abusivas',
+          description: 'Tarifas mucho más bajas que tarjetas de crédito y procesadores tradicionales.',
+          url: 'https://blog.areabitcoin.com.br/bitcoin-como-meio-de-pagamento/',
+        },
+        {
+          icon: Globe,
+          title: 'Pagos globales',
+          description: 'Recibe desde cualquier parte del mundo, instantáneamente, sin intermediarios.',
+          url: 'https://blog.areabitcoin.com.br/como-a-lightning-network-funciona/',
+        },
+        {
+          icon: Shield,
+          title: 'Sin contracargos',
+          description: 'Los pagos en Bitcoin son irreversibles - sin fraudes de contracargo.',
+          url: 'https://blog.areabitcoin.com.br/o-que-e-bitcoin/',
+        },
+        {
+          icon: Coins,
+          title: 'Protección contra inflación',
+          description: 'Bitcoin es escaso y protege tu poder adquisitivo a largo plazo.',
+          url: 'https://blog.areabitcoin.com.br/por-que-o-bitcoin-e-importante/',
         },
       ],
     },
@@ -283,10 +385,53 @@ export const UserGuide = ({ language }: UserGuideProps) => {
                     </a>
                   </>
                 )}
+                {step.btcmapLink && (
+                  <>
+                    {' '}
+                    <a
+                      href={step.btcmapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline font-medium"
+                    >
+                      {language === 'pt' ? 'Cadastre aqui' : language === 'en' ? 'Register here' : 'Registra aquí'}
+                    </a>
+                  </>
+                )}
               </p>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Why Accept Bitcoin */}
+      <div className="bg-gradient-to-br from-primary/10 to-background rounded-xl border border-primary/20 p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <Coins className="w-5 h-5 text-primary" />
+          {content.whyAcceptBitcoin.title}
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {content.whyAcceptBitcoin.items.map((item, index) => (
+            <a
+              key={index}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-3 p-3 bg-background/80 rounded-lg border border-border hover:border-primary/50 transition-colors group"
+            >
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <item.icon className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-medium text-foreground text-sm group-hover:text-primary transition-colors flex items-center gap-1">
+                  {item.title}
+                  <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h4>
+                <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* FAQ */}
