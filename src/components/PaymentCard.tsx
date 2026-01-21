@@ -190,11 +190,29 @@ export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
 
       {/* Action Buttons */}
       <div className="mt-6 flex justify-center gap-3 no-print">
-        <Button onClick={handleDownload} variant="default" size="lg" className="gap-2">
+        <Button 
+          onClick={handleDownload} 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            handleDownload();
+          }}
+          variant="default" 
+          size="lg" 
+          className="gap-2 touch-manipulation"
+        >
           <Download className="w-4 h-4" />
           {t.download}
         </Button>
-        <Button onClick={handlePrint} variant="outline" size="lg" className="gap-2">
+        <Button 
+          onClick={handlePrint} 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            handlePrint();
+          }}
+          variant="outline" 
+          size="lg" 
+          className="gap-2 touch-manipulation"
+        >
           <Printer className="w-4 h-4" />
           {t.print}
         </Button>
