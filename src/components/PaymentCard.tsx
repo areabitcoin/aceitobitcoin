@@ -1,5 +1,5 @@
-import { useState, forwardRef } from 'react';
-import { Copy, Check, Printer, Zap, MapPin, Download } from 'lucide-react';
+import { useState, forwardRef, useRef } from 'react';
+import { Copy, Check, Printer, Zap, MapPin, Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { QRCodeDisplay } from './QRCodeDisplay';
 import { BitcoinIcon } from './BitcoinIcon';
@@ -28,6 +28,8 @@ export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
   language,
 }, ref) => {
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const exportingRef = useRef(false);
   const t = getTranslation(language);
 
   const handleCopy = async () => {
@@ -41,29 +43,74 @@ export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
   };
 
   const handleDownload = async () => {
+    // Prevent double-trigger from pointer + click on mobile
+    if (exportingRef.current) return;
+    exportingRef.current = true;
+    setExporting(true);
+
     const cardElement = typeof ref === 'function' ? null : ref?.current;
-    if (!cardElement) return;
+    if (!cardElement) {
+      exportingRef.current = false;
+      setExporting(false);
+      return;
+    }
     
     try {
+      const generatingText =
+        language === 'pt'
+          ? 'Gerando imagem...'
+          : language === 'es'
+            ? 'Generando imagen...'
+            : 'Generating image...';
+
+      // iOS Safari is unreliable with programmatic downloads.
+      // Open a new tab immediately (still within the user gesture), then navigate it to the image.
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const popup = isIOS ? window.open('', '_blank') : null;
+      if (popup) {
+        popup.document.write(
+          `<!doctype html><html><head><title>${generatingText}</title></head><body style="font-family: system-ui; padding: 24px;">${generatingText}</body></html>`
+        );
+        popup.document.close();
+      }
+
       // Wait for fonts to be fully loaded for accurate rendering
       await document.fonts?.ready;
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      const scale = window.matchMedia('(max-width: 640px)').matches ? 3 : 4;
       
       const canvas = await html2canvas(cardElement, {
         backgroundColor: '#ffffff',
-        scale: 4, // High resolution for crisp quality
+        scale, // High resolution for crisp quality (lighter on mobile)
         useCORS: true,
         allowTaint: true,
         logging: false,
         imageTimeout: 0,
       });
+
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/png')
+      );
+      if (!blob) throw new Error('Failed to generate image blob');
+
+      const url = URL.createObjectURL(blob);
       
-      const link = document.createElement('a');
-      link.download = `${businessName || 'bitcoin-payment'}-qrcode.png`;
-      link.href = canvas.toDataURL('image/png', 1.0); // Maximum PNG quality
-      link.click();
+      if (popup) {
+        popup.location.href = url;
+        // Give iOS time to load the blob URL.
+        setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      } else {
+        const link = document.createElement('a');
+        link.download = `${businessName || 'bitcoin-payment'}-qrcode.png`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
     } catch (error) {
       console.error('Error generating image:', error);
+    } finally {
+      exportingRef.current = false;
+      setExporting(false);
     }
   };
 
@@ -196,17 +243,19 @@ export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
 
       {/* Action Buttons */}
       <div className="mt-6 flex justify-center gap-3 no-print">
-        <Button 
-          onClick={handleDownload} 
-          onTouchEnd={(e) => {
-            e.preventDefault();
-            handleDownload();
-          }}
-          variant="default" 
-          size="lg" 
+        <Button
+          onPointerUp={() => void handleDownload()}
+          onClick={() => void handleDownload()}
+          variant="default"
+          size="lg"
           className="gap-2 touch-manipulation"
+          disabled={exporting}
         >
-          <Download className="w-4 h-4" />
+          {exporting ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Download className="w-4 h-4" />
+          )}
           {t.download}
         </Button>
         <Button 
