@@ -45,16 +45,22 @@ export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
     if (!cardElement) return;
     
     try {
+      // Wait for fonts to be fully loaded for accurate rendering
+      await document.fonts?.ready;
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      
       const canvas = await html2canvas(cardElement, {
         backgroundColor: '#ffffff',
-        scale: 2,
+        scale: 4, // High resolution for crisp quality
         useCORS: true,
         allowTaint: true,
+        logging: false,
+        imageTimeout: 0,
       });
       
       const link = document.createElement('a');
       link.download = `${businessName || 'bitcoin-payment'}-qrcode.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.href = canvas.toDataURL('image/png', 1.0); // Maximum PNG quality
       link.click();
     } catch (error) {
       console.error('Error generating image:', error);
