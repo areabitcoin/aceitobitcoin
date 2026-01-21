@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Settings2, Eye, Github } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PaymentCard } from '@/components/PaymentCard';
@@ -22,6 +22,7 @@ interface FormData {
 const Index = () => {
   const [language, setLanguage] = useState<Language>('pt');
   const [activeTab, setActiveTab] = useState('preview');
+  const cardRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<FormData>({
     businessName: '',
     businessDescription: '',
@@ -87,6 +88,7 @@ const Index = () => {
 
               <TabsContent value="preview" className="mt-0 space-y-6">
                 <PaymentCard
+                  ref={cardRef}
                   businessName={formData.businessName || t.title}
                   businessDescription={formData.businessDescription}
                   address={formData.address}
@@ -99,6 +101,7 @@ const Index = () => {
                   businessName={formData.businessName || t.title}
                   address={formData.address}
                   language={language}
+                  cardRef={cardRef}
                 />
               </TabsContent>
 
@@ -143,6 +146,7 @@ const Index = () => {
                   {t.preview}
                 </h2>
                 <PaymentCard
+                  ref={cardRef}
                   businessName={formData.businessName || t.title}
                   businessDescription={formData.businessDescription}
                   address={formData.address}
@@ -155,6 +159,7 @@ const Index = () => {
                   businessName={formData.businessName || t.title}
                   address={formData.address}
                   language={language}
+                  cardRef={cardRef}
                 />
               </div>
             </div>

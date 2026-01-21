@@ -1,12 +1,14 @@
 import { Share2, Mail, Link2, Check, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Language } from '@/lib/translations';
-import { useState } from 'react';
+import { useState, RefObject } from 'react';
+import html2canvas from 'html2canvas';
 
 interface ShareWidgetProps {
   businessName: string;
   address: string;
   language: Language;
+  cardRef?: RefObject<HTMLDivElement>;
 }
 
 // Custom X (Twitter) Icon
@@ -70,11 +72,76 @@ const translations = {
   },
 };
 
-export const ShareWidget = ({ businessName, address, language }: ShareWidgetProps) => {
+export const ShareWidget = ({ businessName, address, language, cardRef }: ShareWidgetProps) => {
   const [copied, setCopied] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
   const [showEmbed, setShowEmbed] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const t = translations[language];
+
+  // Generate card image for sharing
+  const generateCardImage = async (): Promise<File | null> => {
+    if (!cardRef?.current) return null;
+    
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+      });
+      
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], `${businessName || 'bitcoin-payment'}.png`, {
+              type: 'image/png',
+            });
+            resolve(file);
+          } else {
+            resolve(null);
+          }
+        }, 'image/png');
+      });
+    } catch (error) {
+      console.error('Error generating image:', error);
+      return null;
+    }
+  };
+
+  // Share with native share API (for Instagram Stories, etc.)
+  const handleNativeShare = async () => {
+    setIsSharing(true);
+    
+    try {
+      const imageFile = await generateCardImage();
+      
+      if (imageFile && navigator.canShare?.({ files: [imageFile] })) {
+        await navigator.share({
+          files: [imageFile],
+          title: shareText,
+          text: shareText,
+        });
+      } else if (navigator.share) {
+        // Fallback to text-only share if files not supported
+        await navigator.share({
+          title: shareText,
+          text: `${shareText}\n${currentUrl}`,
+          url: currentUrl,
+        });
+      } else {
+        // Fallback to copying link
+        await navigator.clipboard.writeText(`${shareText}\n${currentUrl}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (error) {
+      // User cancelled or error - just ignore
+      console.log('Share cancelled or failed:', error);
+    } finally {
+      setIsSharing(false);
+    }
+  };
   
   const shareText = t.shareText(businessName || 'Nosso negócio');
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -103,11 +170,8 @@ export const ShareWidget = ({ businessName, address, language }: ShareWidgetProp
       icon: InstagramIcon,
       url: '#',
       color: 'hover:bg-pink-500/10 hover:text-pink-500',
-      onClick: () => {
-        navigator.clipboard.writeText(`${shareText}\n${currentUrl}`);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      },
+      onClick: handleNativeShare,
+      isLoading: isSharing,
     },
     {
       name: 'Email',
@@ -146,17 +210,27 @@ export const ShareWidget = ({ businessName, address, language }: ShareWidgetProp
       <div className="flex flex-wrap gap-3 mb-5">
         {shareLinks.map((social) => {
           const Icon = social.icon;
+          const isLoading = 'isLoading' in social && social.isLoading;
           return (
             <a
               key={social.name}
               href={social.url}
               target={social.url !== '#' ? '_blank' : undefined}
               rel="noopener noreferrer"
-              onClick={social.onClick}
-              className={`flex items-center justify-center w-12 h-12 rounded-xl border border-border bg-background transition-all ${social.color}`}
+              onClick={(e) => {
+                if (social.onClick) {
+                  e.preventDefault();
+                  social.onClick();
+                }
+              }}
+              className={`flex items-center justify-center w-12 h-12 rounded-xl border border-border bg-background transition-all ${social.color} ${isLoading ? 'opacity-50 pointer-events-none' : ''}`}
               title={social.name}
             >
-              <Icon className="w-5 h-5" />
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Icon className="w-5 h-5" />
+              )}
             </a>
           );
         })}

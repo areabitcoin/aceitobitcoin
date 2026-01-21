@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, forwardRef } from 'react';
 import { Copy, Check, Printer, Zap, MapPin, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { QRCodeDisplay } from './QRCodeDisplay';
@@ -18,7 +18,7 @@ interface PaymentCardProps {
   language: Language;
 }
 
-export const PaymentCard = ({
+export const PaymentCard = forwardRef<HTMLDivElement, PaymentCardProps>(({
   businessName,
   businessDescription,
   address,
@@ -26,9 +26,8 @@ export const PaymentCard = ({
   logoUrl,
   btcmapLink,
   language,
-}: PaymentCardProps) => {
+}, ref) => {
   const [copied, setCopied] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
   const t = getTranslation(language);
 
   const handleCopy = async () => {
@@ -42,10 +41,11 @@ export const PaymentCard = ({
   };
 
   const handleDownload = async () => {
-    if (!cardRef.current) return;
+    const cardElement = typeof ref === 'function' ? null : ref?.current;
+    if (!cardElement) return;
     
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      const canvas = await html2canvas(cardElement, {
         backgroundColor: '#ffffff',
         scale: 2,
         useCORS: true,
@@ -76,7 +76,7 @@ export const PaymentCard = ({
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Main Card */}
-      <div ref={cardRef} className="bg-card rounded-3xl shadow-2xl overflow-hidden border border-border">
+      <div ref={ref} className="bg-card rounded-3xl shadow-2xl overflow-hidden border border-border">
         {/* Header */}
         <div className="bitcoin-gradient p-6 text-center relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
@@ -201,4 +201,6 @@ export const PaymentCard = ({
       </div>
     </div>
   );
-};
+});
+
+PaymentCard.displayName = 'PaymentCard';
