@@ -9,6 +9,7 @@ interface ShareWidgetProps {
   address: string;
   language: Language;
   cardRef?: RefObject<HTMLDivElement>;
+  shareUrl?: string;
 }
 
 // Custom X (Twitter) Icon
@@ -72,7 +73,7 @@ const translations = {
   },
 };
 
-export const ShareWidget = ({ businessName, address, language, cardRef }: ShareWidgetProps) => {
+export const ShareWidget = ({ businessName, address, language, cardRef, shareUrl }: ShareWidgetProps) => {
   const [copied, setCopied] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
   const [showEmbed, setShowEmbed] = useState(false);
@@ -144,7 +145,7 @@ export const ShareWidget = ({ businessName, address, language, cardRef }: ShareW
   };
   
   const shareText = t.shareText(businessName || 'Nosso negócio');
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const currentUrl = shareUrl || (typeof window !== 'undefined' ? window.location.href : '');
   
   const shareLinks = [
     {

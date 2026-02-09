@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
-import { Settings2, Eye, Github } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Settings2, Eye, Github, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PaymentCard } from '@/components/PaymentCard';
 import { CustomizeForm, AddressType } from '@/components/CustomizeForm';
@@ -33,6 +34,47 @@ const Index = () => {
   });
 
   const t = getTranslation(language);
+
+  // Build a shareable URL with form data encoded as query params
+  const buildShareUrl = useCallback(() => {
+    const url = new URL(window.location.origin + window.location.pathname);
+    if (formData.businessName) url.searchParams.set('name', formData.businessName);
+    if (formData.businessDescription) url.searchParams.set('desc', formData.businessDescription);
+    if (formData.address) url.searchParams.set('addr', formData.address);
+    if (formData.addressType !== 'lightning') url.searchParams.set('type', formData.addressType);
+    if (formData.logoUrl && !formData.logoUrl.startsWith('data:')) url.searchParams.set('logo', formData.logoUrl);
+    if (formData.btcmapLink) url.searchParams.set('map', formData.btcmapLink);
+    return url.toString();
+  }, [formData]);
+
+  // Read URL params on mount to pre-fill form
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    const desc = params.get('desc');
+    const addr = params.get('addr');
+    const type = params.get('type') as AddressType | null;
+    const logo = params.get('logo');
+    const map = params.get('map');
+
+    if (name || addr) {
+      setFormData((prev) => ({
+        ...prev,
+        businessName: name || prev.businessName,
+        businessDescription: desc || prev.businessDescription,
+        address: addr || prev.address,
+        addressType: type && ['lightning', 'silentPayment', 'onChain'].includes(type) ? type : prev.addressType,
+        logoUrl: logo || prev.logoUrl,
+        btcmapLink: map || prev.btcmapLink,
+      }));
+      // If opened from a shared link, show preview
+      setActiveTab('preview');
+    }
+  }, []);
+
+  const handleFinishCustomize = () => {
+    setActiveTab('preview');
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -102,6 +144,7 @@ const Index = () => {
                   address={formData.address}
                   language={language}
                   cardRef={cardRef}
+                  shareUrl={buildShareUrl()}
                 />
               </TabsContent>
 
@@ -116,6 +159,14 @@ const Index = () => {
                     onFormChange={setFormData}
                     language={language}
                   />
+                  <Button
+                    onClick={handleFinishCustomize}
+                    size="lg"
+                    className="w-full mt-6 gap-2"
+                  >
+                    <CheckCircle2 className="w-5 h-5" />
+                    {language === 'pt' ? 'Concluir e Visualizar' : language === 'es' ? 'Finalizar y Ver' : 'Finish & Preview'}
+                  </Button>
                 </div>
               </TabsContent>
             </Tabs>
@@ -160,6 +211,7 @@ const Index = () => {
                   address={formData.address}
                   language={language}
                   cardRef={cardRef}
+                  shareUrl={buildShareUrl()}
                 />
               </div>
             </div>
