@@ -186,6 +186,14 @@ const Index = () => {
                   onFormChange={setFormData}
                   language={language}
                 />
+                <Button
+                  onClick={handleFinishCustomize}
+                  size="lg"
+                  className="w-full mt-6 gap-2"
+                >
+                  <CheckCircle2 className="w-5 h-5" />
+                  {language === 'pt' ? 'Concluir e Visualizar' : language === 'es' ? 'Finalizar y Ver' : 'Finish & Preview'}
+                </Button>
               </div>
             </div>
 
